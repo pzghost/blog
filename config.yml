@@ -1,8 +1,8 @@
 baseurl: "https://blog.hchen.xyz/"
-title: Ghostwriter example
+title: "Hchen's Blog"
 theme: ghostwriter
 languageCode: en-us
-copyright: My Name
+copyright: Hchen
 disqusShortname: XXX
 googleAnalytics: XXX
 pygmentsUseClasses: true
@@ -28,18 +28,19 @@ privacy:
     useSessionStorage: false
 
 author:
-  name: My Name
+  name: Hchen
   profile: ""
 
 taxonomies:
   tag: tags
+  category: categories
 
 params:
   mainSections:
-    - post
+    - kubernetes
   intro: true
-  headline: Ghostwriter example
-  description: Ghostwriter example description
+  headline: 欢迎大佬光临
+  description: 学无止境
   github: "https://github.com/XXX"
   gitlab: "https://gitlab.com/XXX"
   linkedin: "https://linkedin.com/in/XXX/"
@@ -67,17 +68,21 @@ params:
     # Default value is plausible.io, overwrite this if you are self-hosting or using a custom domain
     serverURL: ""
 
+
 permalinks:
   post: "/:year/:month/:day/:filename/"
 
 menu:
   main:
     - name: Blog
-      url: /
+      url: /post/
       weight: 1
+    - name: Kubernetes
+      url: /kubernetes/
+      weight: 2
     - name: Contact
       url: /page/contact/
-      weight: 2
+      weight: 3
     - name: About
       url: /page/about/
-      weight: 3
+      weight: 4
