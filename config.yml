@@ -9,6 +9,10 @@ pygmentsUseClasses: true
 pygmentsCodefences: true
 
 markup:
+  tableOfContents:
+    endLevel: 4
+    ordered: false
+    startLevel: 1
   highlight:
     codeFences: true
     guessSyntax: false
