@@ -1,9 +1,18 @@
-+++
-title = "Migrating from Jekyll"
-description = "Migrating from Jekyll description."
-date = 2014-04-02T02:13:50Z
-author = "Michael Henderson"
-+++
+---
+title : "Migrating from Jekyll"
+description : "Migrating from Jekyll description."
+date : 2014-04-02T02:13:50Z
+author : "Michael Henderson"
+lastmod: 2020-10-09T10:13:38+08:00
+categories: [Hugo]
+tags: [Markdown, test]
+draft: false
+enableDisqus : true
+enableMathJax: false
+toc: true
+disableToC: false
+disableAutoCollapse: true
+---
 
 ## Move static content to `static`
 

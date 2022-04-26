@@ -1,9 +1,21 @@
-+++
-title = "Creating a New Theme"
-description = "Description of my awesome project."
-date = 2014-09-28T02:13:50Z
-author = "Michael Henderson"
-+++
+---
+title : "Creating a New Theme"
+description : "Description of my awesome project."
+date : 2014-09-28T02:13:50Z
+author : "Michael Henderson"
+
+lastmod: 2020-10-09T10:13:38+08:00
+categories: [Hugo]
+tags: [Markdown, test]
+draft: false
+enableDisqus : true
+enableMathJax: false
+toc: true
+disableToC: false
+disableAutoCollapse: true
+---
+
+[主题之家](https://themes.gohugo.io/tags/blog/)
 
 ## Introduction
 

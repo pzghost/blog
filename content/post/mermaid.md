@@ -3,6 +3,15 @@ title: "Mermaid"
 isCJKLanguage: true
 date: 2022-04-25T15:07:04Z
 draft: false
+lastmod: 2020-10-09T10:13:38+08:00
+categories: [Hugo]
+tags: [Markdown, test]
+draft: false
+enableDisqus : true
+enableMathJax: false
+toc: true
+disableToC: false
+disableAutoCollapse: true
 ---
 
 # [hugo 添加　mermaid 支持](https://gohugo.io/content-management/diagrams/#mermaid-diagrams)

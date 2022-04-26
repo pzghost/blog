@@ -2,6 +2,15 @@
 title: "CSI"
 isCJKLanguage: true
 date: 2022-04-25T11:08:16Z
+lastmod: 2020-10-09T10:13:38+08:00
+categories: [Hugo]
+tags: [Markdown, test]
+draft: false
+enableDisqus : true
+enableMathJax: false
+toc: true
+disableToC: false
+disableAutoCollapse: true
 ---
 
 # 资料
