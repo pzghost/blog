@@ -18,17 +18,11 @@ googleAnalytics = ""
   disqus = ""
   mainSections = "kubernetes"
 
-[params.valine]
-  enable = false
-  lang = 'en' # zh-CN
-  appId = ''
-  appKey = ''
-  placeholder = 'What should I say......'
-  requiredFields = ['nick', 'mail']
-  avatar = 'robohash'
-  visitor = true
-  serverURLS = 'https://blog.hchen.xyz'
-  debug = false # display the visitor counts when using 'hugo server'
+[params.utteranc]
+  enable = true
+  repo = "pzghost/blog-utterances"
+  issueTerm = "title"
+  theme = "github-light"
 
 [menu]
   [[menu.main]]
