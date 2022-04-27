@@ -13,6 +13,8 @@ disableToC: false
 disableAutoCollapse: true
 ---
 
+Have a nice day! :heart:
+---
 # 资料
 [CSI Design](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md)  
 [CSI Docs](https://kubernetes-csi.github.io/docs/)  
