@@ -2,7 +2,7 @@
 title: "CSI"
 isCJKLanguage: true
 date: 2022-04-25T11:08:16Z
-lastmod: 2022-04-27T10:13:38+08:00
+lastmod: 2022-04-28T15:13:38+08:00
 #categories: [CSI]
 #tags: [kubernetes, csi, storage, volume]
 draft: false
@@ -13,14 +13,7 @@ disableToC: false
 disableAutoCollapse: true
 ---
 
-Have a nice day! :heart:
----
-# 资料
-[CSI Design](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md)  
-[CSI Docs](https://kubernetes-csi.github.io/docs/)  
-[CSI SPEC](https://github.com/container-storage-interface/spec/blob/master/spec.md)  
-[详解 Kubernetes Volume 的实现原理](https://draveness.me/kubernetes-volume/)
-
+> **Have a nice day! :heart:**
 ---
 # 术语
 
@@ -48,8 +41,8 @@ Have a nice day! :heart:
 Kubernetes volume plugin 目前是 "in-tree" 的状态，意味着它们与核心的 kubernetes 二进制文件一起被链接、编译、构建和发行。向 Kubernetes 添加一个新的存储系统（a volume plugin）需要将代码添加到 Kubernetes 核心代码库中。但是这是不不可取的，原因有很多，比如：
 
   1. Volume plugin 的发展、发布和 kubernetes 紧耦合且依赖于 kubernetes 的版本
-  2. Kubernetes 开发、社区负责人员需要测试和维护所有的 volume plugin，而不仅仅是测试和维护稳定的插件
-  3. Volume plugin 的 bug 可能导致整个 kubernetes crash
+  2. Kubernetes 开发、社区负责人员需要测试和维护所有的 volume plugin，而不仅仅是测试和维护稳定的
+  3. Volume plugin 的 bug 可能导致 kubernetes 的其他组件 crash
   4. Volume plugin 和 kubernetes 拥有同样的特权
   5. 必须提供 Volume plugin 的源码，而不能选择只提供一个二进制文件
 
@@ -312,3 +305,11 @@ service Node {
 ---
 # 总结
 TODO
+
+# 资料
+[CSI Design](https://github.com/kubernetes/design-proposals-archive/blob/main/storage/container-storage-interface.md)  
+[CSI Docs](https://kubernetes-csi.github.io/docs/)  
+[CSI SPEC](https://github.com/container-storage-interface/spec/blob/master/spec.md)  
+[详解 Kubernetes Volume 的实现原理](https://draveness.me/kubernetes-volume/)
+
+---
