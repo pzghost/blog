@@ -102,3 +102,22 @@ INFO[05-27|08:04:26] Request Completed                        logger=context use
 > 这里的错误是正常的，因为没有对接 prometheus，也没有在 k8s 里面，收集不到这些数据。
 ![](/static/images/k8s/prometheus/grafana-migrate-alerts-rules.png)
 ![](/static/images/k8s/prometheus/grafana-migrate-1-alerts-rules.png)
+
+---
+# 问题汇总
+
+## Grafana Logs "database is locked
+[解决](https://github.com/grafana/grafana/issues/16638)
+
+- 操作(2 选 1，建议 2)
+    1.
+    ```shell
+    kubectl -n monitoring edit deployments.apps grafana
+          - env:
+            - name: GF_DATABASE_CACHE_MODE
+              value: shared
+    ```
+    2.
+    ```shell
+    sqlite3 grafana.db 'pragma journal_mode=wal;'
+    ```
