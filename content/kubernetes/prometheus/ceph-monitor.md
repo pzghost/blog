@@ -35,6 +35,7 @@ rook-ceph-mon-e-66cbb69dcc-nldgq   1/1     Running   0          122m   10.233.75
 
 ### 更新 cr 文件
 > 失败
+
 ```shell
 kubectl -n rook-ceph  edit  cephclusters.ceph.rook.io rook-ceph
 ```
@@ -87,7 +88,7 @@ rook-ceph-mon-c-7cb4c5b74f-ntmc4                  0/1     Pending     0         
 
 - 移动 /var/lib/rook
 
-‵‵`shell
+```shell
 # 这一步骤是在 node3 上操作
 root@node3:/var/lib# scp -r node4:/var/lib/rook /var/lib/
 kubectl -n rook-ceph edit configmaps rook-ceph-mon-endpoints
