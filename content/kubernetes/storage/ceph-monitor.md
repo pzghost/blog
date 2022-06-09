@@ -18,7 +18,7 @@ disableAutoCollapse: true
 
 # 实操
 
-## 现在到情况
+## 现在的情况
 
 > 可以看到 mon-b 在 node1, mon-c 在 node4, mon-e 在 node2
 ```shell
