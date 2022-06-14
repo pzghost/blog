@@ -3,7 +3,7 @@ title: "Grafana"
 description : "Grafana 随记"
 isCJKLanguage: true
 date: 2022-05-27T13:53:23+08:00
-#lastmod: 2022-04-28T15:13:38+08:00
+lastmod: 2022-06-14T19:13:38+08:00
 draft: false
 enableDisqus : true
 enableMathJax: false
@@ -13,19 +13,20 @@ disableAutoCollapse: true
 ---
 > **Have a nice day! :heart:**
 
-# 参考
+# 迁移配置到其他环境
+## 参考
 
 [How to migrate your configuration database](https://grafana.com/blog/2020/01/13/how-to-migrate-your-configuration-database/)
 
-# 前言
+## 前言
 
 > grafana 不会对数据库有太多复杂的操作，也就保存一些基本的配置信息(比如 users, dashboards, alerts 等等)，所以默认选择 sqlite3 作为配置的存储。
 
-# 迁移当前配置
+## 迁移当前配置
 
 > 在当前环境中一条一条的添加了很多的配置，将来新的环境也可以使用相同的配置，那是否还是需要一条一条的去添加了？ 当然可以，鱼就是这样摸的。但鱼被其他伙伴摸完了，无鱼可摸了，那怎么办？ 那就，那就开始正文吧。
 
-## 当前的数据库情况
+### 当前的数据库情况
 
 > 当前环境部署在 k8s 集群里面, 版本 Grafana v8.2.2 (6232fe07c0)
 
@@ -40,7 +41,7 @@ cd /var/lib/grafana/
 ls -l grafana.db
 -rw-rw----    1 nobody   nobody     2560000 May 27 07:36 grafana.db
 ```
-## 导出当前数据库
+### 导出当前数据库
 ```shell
 # 标配的 cp 
 kubectl -n monitoring cp $(kubectl -n monitoring  get pods -l "app.kubernetes.io/component=grafana" -oname | awk -F'/' '{print $NF}'):/var/lib/grafana/grafana.db ./grafana.db
@@ -61,7 +62,7 @@ grafana.db: SQLite 3.x database, last written using SQLite version 3035004
 
 ```
 
-## 伪迁移
+### 伪迁移
 
 > 为撒叫伪迁移呢？ 因为准备直接 docker run 一个而不是搭建一套 k8s
 
@@ -121,3 +122,98 @@ INFO[05-27|08:04:26] Request Completed                        logger=context use
     ```shell
     sqlite3 grafana.db 'pragma journal_mode=wal;'
     ```
+
+## Templating Failed to upgrade legacy queries Datasource xxx not found
+
+![](/static/images/k8s/prometheus/grafana-template-datasource-not-found.png)
+
+## 参考
+[Support dashboard variables in dashboard provisioning](https://github.com/grafana/grafana/issues/10786)
+
+## 前言
+> 从一套环境导出 dashboard 为 json 文件，在另一套环境中导入，那么出现如标题的问题, 应该怎么解决呢？1. 闲的蛋疼的话可以一个一个慢慢编辑，选择正确得 Datasource（日后导入到其他环境依旧需要如此操作）; 2. 直接编辑 json 文件（一劳永逸，环境随便换）
+
+## 实操
+1. 方式1
+> 添加一个输入参数
+
+```json
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+..................................................
+        # 所有的这些
+        "datasource": {
+          "type": "prometheus",
+          "uid": "xxxx-uid"
+        },
+        # 修改为
+        "datasource": "${DS_PROMETHEUS}",
+}
+```
+1. 方式2
+> 硬编码
+```json
+{
+  ...........................
+        # 所有的这些
+        "datasource": {
+          "type": "prometheus",
+          "uid": "xxxx-uid"
+        },
+        # 修改为
+        # 所有的这些
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+  ...........................
+}
+```
+
+1. 方式3
+> 添加一个变量
+```json
+{
+  .................
+  # 找到 templating.list, 添加一个变量，这里的变量名为 DS_PROMETHEUS,值为 prometheus
+  "templating": {
+    "list": [
+      {
+        "datasource": "Prometheus",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+...
+        # 所有的这些
+        "datasource": {
+          "type": "prometheus",
+          "uid": "xxxx-uid"
+        },
+        # 修改为
+        # 所有的这些
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+}
+```
