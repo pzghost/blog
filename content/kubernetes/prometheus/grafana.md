@@ -118,10 +118,12 @@ INFO[05-27|08:04:26] Request Completed                        logger=context use
             - name: GF_DATABASE_CACHE_MODE
               value: shared
     ```
+
     2.
     ```shell
     sqlite3 grafana.db 'pragma journal_mode=wal;'
     ```
+
 
 ## Templating Failed to upgrade legacy queries Datasource xxx not found
 
