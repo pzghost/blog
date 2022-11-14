@@ -244,7 +244,7 @@ INFO[05-27|08:04:26] Request Completed                        logger=context use
         - name: GF_DATABASE_SSL_MODE
           value: disable
 ```
-* 停止 Grafana， 导出 pg 中的 grafana 库的 schame(表结构)
+* 停止 Grafana， 导出 pg 中的 grafana 库的 schema(表结构)
 ```shell
 pg_dump --schema-only-U postgres grafana > schema.sql
 ```
