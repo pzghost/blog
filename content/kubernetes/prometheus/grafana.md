@@ -219,3 +219,65 @@ INFO[05-27|08:04:26] Request Completed                        logger=context use
         },
 }
 ```
+
+# 迁移 SQLite to Postgres
+单纯的使用 PG 用来当 Grafana 的后端存储，这个倒是简单，难的是怎么样把现有数据迁移过去。网络上的方案千千万，N 种方式失败之后终寻得成功
+
+## 迁移数据
+* 停止 Grafana, copy grafana.db 文件
+> 这个太复杂了，根据环境想办法导出 db 文件
+* 配置 PG 后端
+配置文件、环境变量皆可，这里用环境变量(k8s 环境里面跑的)，根据实际情况更改
+> PS：需先到 pg 中创建 grafana 库
+```yaml
+      - env:
+        - name: GF_DATABASE_TYPE
+          value: postgres
+        - name: GF_DATABASE_HOST
+          value: pg.postgres-system.svc.cluster.local:5432
+        - name: GF_DATABASE_NAME
+          value: grafana
+        - name: GF_DATABASE_USER
+          value: postgres
+        - name: GF_DATABASE_PASSWORD
+          value: u14b3MrK
+        - name: GF_DATABASE_SSL_MODE
+          value: disable
+```
+* 停止 Grafana， 导出 pg 中的 grafana 库的 schame(表结构)
+```shell
+pg_dump --schema-only-U postgres grafana > schema.sql
+```
+* 删库(不)跑路
+删除 grafana 库，重新创建 grafana 库，导入表结构
+> PS: 记得删库、建库
+
+导入表结构
+```shell
+psql -d grafana -f schema.sql
+```
+* 神器 pgloader 导入数据
+
+pgloader 的配置 db.load
+```yaml
+load database
+    from sqlite:///var/db/grafana.db
+    into postgresql://postgres:u14b3MrK@pg.postgres-system.svc:5432/grafana
+    with data only, reset sequences
+    set work_mem to '1024MB', maintenance_work_mem to '2048MB';
+```
+开始导入
+> PS: 这里所有的操作都是用容器化操作的，pgloader 不要使用 latest(程序本身有些问题，在 github 的 issue 里面有讨论，忘记记录 url 了)，使用的是 dimitri/pgloader:ccl.latest
+```shell
+pgloader db.load
+```
+
+* 启动 Grafana
+至此，整个迁移过程结束，现在可以检查数据是否正确的迁移过来了
+
+## Thanks
+[database islocked](https://community.grafana.com/t/database-is-locked-unable-to-use-grafana-anymore/16557)  
+[grafana sqlite to postgres](https://github.com/wbh1/grafana-sqlite-to-postgres)  
+[grafana数据迁移到mysql](https://blog.csdn.net/vastz/article/details/120313494)  
+[Migrating Grafana’s database from sqlite to postgres](https://community.zenduty.com/t/migrating-grafanas-database-from-sqlite-to-postgres/406/2)  
+[pgloader(神器)](https://pgloader.readthedocs.io/en/latest/ref/sqlite.html)
