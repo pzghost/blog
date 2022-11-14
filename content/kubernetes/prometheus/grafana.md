@@ -3,7 +3,7 @@ title: "Grafana"
 description : "Grafana 随记"
 isCJKLanguage: true
 date: 2022-05-27T13:53:23+08:00
-lastmod: 2022-06-14T19:13:38+08:00
+lastmod: 2022-11-14T13:13:38+08:00
 draft: false
 enableDisqus : true
 enableMathJax: false
