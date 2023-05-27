@@ -34,17 +34,21 @@ googleAnalytics = ""
   url = "/kubernetes/"
   weight = 2
   [[menu.main]]
+  name = "Go"
+  url = "/golang/"
+  weight = 3
+  [[menu.main]]
   name = "CloudFlare"
   url = "/cloudflare/"
-  weight = 3
+  weight = 4
   [[menu.main]]
   name = "About"
   url = "/page/about/"
-  weight = 4
+  weight = 5
   [[menu.main]]
   name = "Contact"
   url = "/page/contact/"
-  weight = 5
+  weight = 6
 
 [social]
   github = "https://github.com/RainerChiang"
