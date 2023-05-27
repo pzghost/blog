@@ -49,13 +49,15 @@ type Counter struct {
 	mutex sync.Mutex
 }
 
-func (c *Counter) Increment() {
+func (c *Counter) Increment(wg *sync.WaitGroup) {
+	defer wg.Done()
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	c.count++
 }
 
-func (c *Counter) Decrement() {
+func (c *Counter) Decrement(wg *sync.WaitGroup) {
+	defer wg.Done()
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	c.count--
@@ -69,20 +71,21 @@ func (c *Counter) GetCount() int {
 
 func main() {
 	counter := Counter{}
+	var wg sync.WaitGroup
 
 	// 并发地增加计数器
 	for i := 0; i < 10; i++ {
-		go counter.Increment()
+		wg.Add(1)
+		go counter.Increment(&wg)
 	}
 
 	// 并发地减少计数器
 	for i := 0; i < 5; i++ {
-		go counter.Decrement()
+		wg.Add(1)
+		go counter.Decrement(&wg)
 	}
 
 	// 等待所有 goroutine 完成
-	wg := sync.WaitGroup{}
-	wg.Add(15)
 	wg.Wait()
 
 	// 输出最终的计数器值
