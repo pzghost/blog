@@ -359,3 +359,62 @@ func main() {
 最后，我们打印 data 的值，可以看到它已经被成功初始化。
 
 使用 sync.Once，我们可以确保某个操作只执行一次，无论有多少个 goroutine 并发调用它。这在需要进行一次性初始化、单例模式等场景中非常有用。
+
+
+# Atomic
+
+atomic 包是 Go 语言中提供的原子操作包，用于对基本数据类型进行原子操作，保证并发安全。
+
+atomic 包提供了一系列的函数，用于对特定类型的值进行原子操作，包括读取、写入、比较和交换等操作。这些原子操作是以底层原子指令来实现的，可以在多个 goroutine 之间进行同步和通信。
+
+以下是一些常用的 atomic 包的函数：
+
+* Add*：用于原子地增加或减少一个整型值。
+* CompareAndSwap*：用于比较并交换一个值，如果旧值与期望值相等，则替换为新值。
+* Load*：用于原子地读取一个值。
+* Store*：用于原子地存储一个值。
+* Swap*：用于原子地交换一个值。
+* 表示可以是 Int32、Int64、Uint32、Uint64、Pointer 等类型。
+
+以下是一个简单示例，展示了如何使用 atomic 包进行原子操作：
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"sync/atomic"
+)
+
+func main() {
+	var counter int64
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+
+		for i := 0; i < 1000; i++ {
+			atomic.AddInt64(&counter, 1)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+
+		for i := 0; i < 1000; i++ {
+			atomic.AddInt64(&counter, 1)
+		}
+	}()
+
+	wg.Wait()
+
+	fmt.Println("Counter:", counter)
+}
+```
+在这个示例中，我们使用了 atomic 包的 AddInt64() 函数对一个 int64 类型的变量 counter 进行原子增加操作。我们创建了两个 goroutine，并分别对 counter 执行 1000 次增加操作。
+
+通过使用 atomic.AddInt64()，我们可以确保多个 goroutine 对 counter 进行原子操作，避免了并发访问的竞态条件。最后，我们打印 counter 的值，可以看到它被正确地增加了 2000 次。
+
+atomic 包提供了一种有效且安全的方式来进行并发操作，但需要注意的是，它仅适用于基本数据类型的操作，对于复杂的数据结构，可能需要结合其他同步原语来实现并发安全。
